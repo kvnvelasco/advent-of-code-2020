@@ -1,5 +1,5 @@
 use std::error::Error;
-use std::io::BufRead;
+use std::ops::Index;
 
 #[derive(Eq, PartialEq, Debug)]
 struct Line<'a> {
@@ -45,6 +45,7 @@ impl<'a> Line<'a> {
             input: input.trim(),
         })
     }
+
     fn evaluate_valid_line_incorrectly(&self) -> bool {
         let mut character_count = 0;
         for character in self.input.chars() {
