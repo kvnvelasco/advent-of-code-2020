@@ -135,7 +135,6 @@ impl Program {
                 return self;
             };
         }
-        self
     }
 }
 

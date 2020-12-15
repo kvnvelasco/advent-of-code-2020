@@ -61,18 +61,27 @@ fn b() -> Result<usize, Box<dyn Error>> {
     return Err("Unable to find matching pattern".into());
 }
 
+pub fn find_pair_of_numbers_with_sum_in_list<'a>(
+    list: impl Iterator<Item = &'a isize>,
+    target: isize,
+) -> Option<(isize, isize)> {
+    let mut seen_set = HashSet::new();
+    for &value in list {
+        let difference = target - value;
+        match seen_set.get(&difference) {
+            None => seen_set.insert(value),
+            Some(&v) => return Some((value, v)),
+        };
+    }
+
+    None
+}
+
 pub fn a_optimal() {
     let input = include_str!("./inputs/day1.txt")
         .lines()
-        .map(|line| line.parse::<usize>().unwrap())
-        .collect::<Vec<usize>>();
+        .map(|line| line.parse::<isize>().unwrap())
+        .collect::<Vec<isize>>();
 
-    let mut seen_set = HashSet::new();
-    for &value in input.iter() {
-        let difference = 2020 - value;
-        match seen_set.get(&difference) {
-            None => seen_set.insert(value),
-            Some(v) => return,
-        };
-    }
+    find_pair_of_numbers_with_sum_in_list(input.iter(), 2020);
 }
