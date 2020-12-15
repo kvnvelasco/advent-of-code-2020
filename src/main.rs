@@ -3,6 +3,7 @@ extern crate indoc;
 
 mod utils;
 
+mod day_eight;
 mod day_five;
 mod day_four;
 mod day_one;
