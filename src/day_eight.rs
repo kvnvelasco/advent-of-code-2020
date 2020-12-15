@@ -1,17 +1,18 @@
 use crate::day_eight::Op::{Acc, Jump, Nop};
 use crate::utils::split_once_at;
+use std::error::Error;
 
 #[derive(Debug)]
 enum Op {
     Jump(isize),
-    Nop,
+    Nop(isize),
     Acc(isize),
 }
 #[derive(Debug)]
 struct Program {
     trace: Vec<isize>,
     acc: isize,
-    program_counter: isize, // this being negative is a good way to fck up a day
+    program_counter: isize,
     instructions: Vec<Instruction>,
 }
 
@@ -27,7 +28,7 @@ impl Instruction {
         let operation = match operation {
             "jmp" => Jump(parameters.parse().unwrap()),
             "acc" => Acc(parameters.parse().unwrap()),
-            "nop" => Nop,
+            "nop" => Nop(parameters.parse().unwrap()),
             _ => panic!("Unable to parse instruction"),
         };
 
@@ -49,21 +50,25 @@ impl Program {
         }
     }
 
-    fn program_step(&mut self) {
+    fn reset_program(&mut self) {
+        self.trace.clear();
+        self.program_counter = 1;
+        self.acc = 0;
+        for instruction in self.instructions.iter_mut() {
+            instruction.executed = false;
+        }
+    }
+
+    fn program_step(&mut self) -> Result<(), Box<dyn Error>> {
         let instruction = &mut self.instructions[self.program_counter as usize - 1]; // expect this to panic with index out of bounds access
 
         if (instruction.executed) {
-            println!(
-                "Executing previously executed instruction, panic, dump, acc: {}",
-                self.acc
-            );
-            println!("Instruction trace: {:?}", self.trace);
-            panic!("Program halt")
+            return Err("Previously Executed Instruction".into());
         }
 
         match instruction.operation {
             Jump(pos) => self.program_counter += pos,
-            Nop => self.program_counter += 1,
+            Nop(_) => self.program_counter += 1,
             Acc(amt) => {
                 self.acc += amt;
                 self.program_counter += 1
@@ -76,16 +81,61 @@ impl Program {
         if self.program_counter < 0 {
             panic!("Program counter has gone to negatives, the world is a lie")
         }
+
+        Ok(())
     }
 
-    fn execute(&mut self) {
+    fn execute(&mut self) -> Result<(), Box<dyn Error>> {
         loop {
+            self.program_step()?;
             if self.program_counter as usize >= self.instructions.len() {
                 // program has come to a halt
-                return;
+                return Ok(());
             }
-            self.program_step()
         }
+    }
+
+    // will attempt to backtrace itself after an error and attempt to correct a flipped instruction
+    // consumes self and returns a new uninited program
+    fn self_debug(mut self) -> Self {
+        // walk over all of the instructions going backwards and attempt to rerun the program
+        let mut trace = self.trace.clone();
+
+        loop {
+            let active_modification = trace.pop();
+
+            if let Some(active) = active_modification {
+                self.reset_program();
+
+                {
+                    let instruction = &mut self.instructions[active as usize - 1];
+                    match instruction.operation {
+                        Jump(to) => instruction.operation = Nop(to),
+                        Nop(to) => instruction.operation = Jump(to),
+                        _ => {}
+                    }
+                }
+                // attempt to run the program
+                let attempt = self.execute();
+                if attempt.is_err() {
+                    let instruction = &mut self.instructions[active as usize - 1];
+                    // rollback and try again
+                    match instruction.operation {
+                        Jump(to) => instruction.operation = Nop(to),
+                        Nop(to) => instruction.operation = Jump(to),
+                        _ => {}
+                    }
+                } else {
+                    println!("Found error at {}", active);
+                    self.reset_program();
+
+                    return self;
+                }
+            } else {
+                return self;
+            };
+        }
+        self
     }
 }
 
@@ -101,17 +151,26 @@ mod tests {
     }
 
     #[test]
-    #[should_panic]
     fn program_is_executable() {
         let mut program = Program::parse_from_text(include_str!("inputs/day_eight.test.txt"));
-        program.execute();
+        assert!(program.execute().is_err());
     }
 
     #[test]
-    #[should_panic]
     fn program_a() {
         let mut program = Program::parse_from_text(include_str!("inputs/day_eight.txt"));
-        program.execute();
+        assert!(program.execute().is_err());
+    }
+
+    #[test]
+    fn program_a_is_self_debuggable() {
+        let mut program = Program::parse_from_text(include_str!("inputs/day_eight.txt"));
+        assert!(program.execute().is_err());
+
+        program = program.self_debug();
+
+        assert!(program.execute().is_ok());
+        assert_eq!(program.acc, 2060);
     }
 
     #[test]
