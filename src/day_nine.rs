@@ -1,5 +1,5 @@
 use crate::day_one::find_pair_of_numbers_with_sum_in_list;
-use std::error::Error;
+
 use std::ops::Range;
 
 #[derive(Debug, Default, Clone)]
@@ -51,7 +51,7 @@ mod tests {
             .lines()
             .map(|x| x.parse::<isize>().unwrap())
             .collect();
-        let mut xmas_data = XmasData {
+        let xmas_data = XmasData {
             data_stream: items,
             preamble_size: 5,
         };
@@ -65,7 +65,7 @@ mod tests {
             .lines()
             .map(|x| x.parse::<isize>().unwrap())
             .collect();
-        let mut xmas_data = XmasData {
+        let xmas_data = XmasData {
             data_stream: items,
             preamble_size: 25,
         };
@@ -79,7 +79,7 @@ mod tests {
             .lines()
             .map(|x| x.parse::<isize>().unwrap())
             .collect();
-        let mut xmas_data = XmasData {
+        let xmas_data = XmasData {
             data_stream: items,
             preamble_size: 5,
         };
@@ -96,7 +96,7 @@ mod tests {
             .lines()
             .map(|x| x.parse::<isize>().unwrap())
             .collect();
-        let mut xmas_data = XmasData {
+        let xmas_data = XmasData {
             data_stream: items,
             preamble_size: 25,
         };

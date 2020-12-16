@@ -17,7 +17,7 @@ mod day_three;
 mod day_two;
 
 fn main() {
-    let (all, start, end) = Node::construct_graph_from_input(include_str!("inputs/day_ten.txt"));
+    let (_all, start, end) = Node::construct_graph_from_input(include_str!("inputs/day_ten.txt"));
 
     let mut traverse = NodeTraverse { count: 0 };
     traverse.count_paths_from_to(start, end);

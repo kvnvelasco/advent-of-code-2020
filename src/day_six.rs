@@ -20,7 +20,7 @@ impl Iterator for GroupIterator {
     fn next(&mut self) -> Option<Self::Item> {
         let mut group_members = vec![];
         loop {
-            let mut next = self.source.next();
+            let next = self.source.next();
             if next.is_none() && group_members.len() > 0 {
                 break;
             } else if next.is_none() {
@@ -80,7 +80,7 @@ fn determine_common_answer_set_for_group(group: &mut Group) -> HashSet<char> {
     }
 
     let mut output_set = HashSet::new();
-    for (answer, count) in group_map.iter().filter(|(c, x)| **x == group_size) {
+    for (answer, _count) in group_map.iter().filter(|(_c, x)| **x == group_size) {
         output_set.insert(*answer);
     }
 

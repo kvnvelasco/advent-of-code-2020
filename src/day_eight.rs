@@ -62,7 +62,7 @@ impl Program {
     fn program_step(&mut self) -> Result<(), Box<dyn Error>> {
         let instruction = &mut self.instructions[self.program_counter as usize - 1]; // expect this to panic with index out of bounds access
 
-        if (instruction.executed) {
+        if instruction.executed {
             return Err("Previously Executed Instruction".into());
         }
 

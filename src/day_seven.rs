@@ -1,5 +1,5 @@
 use crate::utils::{split_into_array_by, split_once_at};
-use std::collections::hash_map::RandomState;
+
 use std::collections::{HashMap, HashSet};
 
 #[derive(Debug, PartialOrd, PartialEq)]
@@ -125,8 +125,8 @@ impl RuleSearch {
 #[cfg(test)]
 mod tests {
     use crate::day_seven::{parse_input_line, InputChild, InputLine, RuleSearch};
-    use std::collections::{HashMap, HashSet};
-    use std::rc::Rc;
+    
+    
 
     #[test]
     fn it_can_parse_an_input_rule() {
@@ -151,7 +151,7 @@ mod tests {
 
     #[test]
     fn search_struct_can_be_initialised() {
-        let search_struct = RuleSearch::from_input_lines(
+        let _search_struct = RuleSearch::from_input_lines(
             include_str!("inputs/day_seven.test.txt")
                 .lines()
                 .map(parse_input_line),

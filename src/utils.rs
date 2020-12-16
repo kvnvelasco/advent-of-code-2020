@@ -13,7 +13,7 @@ pub fn split_once_at(source: &'static str, pattern: &'static str) -> (&'static s
 }
 
 pub fn split_into_array_by<'a>(source: &'a str, delimiter: &'static str) -> Vec<&'a str> {
-    let mut iterator = source.split(delimiter);
+    let iterator = source.split(delimiter);
 
     iterator.collect()
 }

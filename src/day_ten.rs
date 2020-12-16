@@ -1,8 +1,8 @@
 use crate::utils::parse_input_into_vec;
 use std::borrow::Borrow;
 use std::cell::RefCell;
-use std::collections::{HashMap, HashSet};
-use std::fmt::{Debug, Formatter};
+use std::collections::{HashMap};
+use std::fmt::{Debug};
 use std::ops::{Add, AddAssign, Deref};
 use std::rc::Rc;
 
@@ -153,12 +153,12 @@ mod tests {
         chunk_nodes_by_pivot_nodes, compute_deltas_for_sorted_list, fold_up_differences_into_map,
         produce_sorted_joltage_list, Node, NodeTraverse,
     };
-    use crate::utils::parse_input_into_vec;
-    use std::borrow::Borrow;
+    
+    
 
     #[test]
     fn test_data_a() {
-        let mut inputs = produce_sorted_joltage_list(include_str!("inputs/day_ten.test.txt"));
+        let inputs = produce_sorted_joltage_list(include_str!("inputs/day_ten.test.txt"));
 
         let difference_set = compute_deltas_for_sorted_list(&inputs);
         let map = fold_up_differences_into_map(&difference_set);
@@ -168,7 +168,7 @@ mod tests {
 
     #[test]
     fn production_a() {
-        let mut inputs = produce_sorted_joltage_list(include_str!("inputs/day_ten.txt"));
+        let inputs = produce_sorted_joltage_list(include_str!("inputs/day_ten.txt"));
 
         let difference_set = compute_deltas_for_sorted_list(&inputs);
         let map = fold_up_differences_into_map(&difference_set);
@@ -185,7 +185,7 @@ mod tests {
                 continue;
             }
 
-            let (all, start, end) = Node::construct_graph_from_vec(&chunk);
+            let (_all, start, end) = Node::construct_graph_from_vec(&chunk);
 
             let mut traverse = NodeTraverse { count: 0 };
             traverse.count_paths_from_to(start, end);

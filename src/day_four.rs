@@ -2,8 +2,8 @@ use crate::day_four::Field::{
     BirthYear, CountryID, ExpirationYear, EyeColor, HairColor, Height, IssueYear,
 };
 use std::collections::HashSet;
-use std::convert::TryFrom;
-use std::error::Error;
+
+
 use std::hash::{Hash, Hasher};
 
 #[derive(Debug, Eq)]
@@ -164,7 +164,7 @@ mod tests {
     fn parsing_batch_files() {
         let valid_count: usize = parse_passport_batch(include_str!("inputs/day_four.test.txt"))
             .iter()
-            .map(|p| if (p.validate()) { 1 } else { 0 })
+            .map(|p| if p.validate() { 1 } else { 0 })
             .sum();
 
         assert_eq!(valid_count, 2)
@@ -174,7 +174,7 @@ mod tests {
     fn parse_batch_files_prod() {
         let valid_count: usize = parse_passport_batch(include_str!("inputs/day_four.txt"))
             .iter()
-            .map(|p| if (p.validate()) { 1 } else { 0 })
+            .map(|p| if p.validate() { 1 } else { 0 })
             .sum();
 
         assert_eq!(valid_count, 260)
@@ -186,7 +186,7 @@ mod tests {
             parse_passport_batch(include_str!("inputs/day_four_invalid.test.txt"))
                 .iter()
                 .map(|p| {
-                    if (p.validate_with_field_validation()) {
+                    if p.validate_with_field_validation() {
                         1
                     } else {
                         0
@@ -200,7 +200,7 @@ mod tests {
             parse_passport_batch(include_str!("inputs/day_four_valid.test.txt"))
                 .iter()
                 .map(|p| {
-                    if (p.validate_with_field_validation()) {
+                    if p.validate_with_field_validation() {
                         1
                     } else {
                         0
@@ -216,7 +216,7 @@ mod tests {
         let valid_count: usize = parse_passport_batch(include_str!("inputs/day_four.txt"))
             .iter()
             .map(|p| {
-                if (p.validate_with_field_validation()) {
+                if p.validate_with_field_validation() {
                     1
                 } else {
                     0

@@ -1,4 +1,4 @@
-use std::mem::swap;
+
 use std::ops::Range;
 
 #[derive(Debug)]
@@ -56,7 +56,7 @@ fn process_boarding_pass(pass: &str) -> (u8, u8) {
 #[cfg(test)]
 mod tests {
     use crate::day_five::{find_column_number, find_seat_row_number, process_boarding_pass};
-    use std::cmp::{max, min};
+    
 
     #[test]
     fn can_find_a_row() {

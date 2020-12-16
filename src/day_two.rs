@@ -1,5 +1,5 @@
 use std::error::Error;
-use std::ops::Index;
+
 
 #[derive(Eq, PartialEq, Debug)]
 struct Line<'a> {
@@ -74,7 +74,7 @@ impl<'a> Line<'a> {
     }
 }
 
-pub fn a(mut input_set: impl Iterator<Item = &'static str>) -> Result<usize, Box<dyn Error>> {
+pub fn a(input_set: impl Iterator<Item = &'static str>) -> Result<usize, Box<dyn Error>> {
     let lines = input_set.map(Line::parse_from_str);
 
     let mut count = 0;
@@ -86,7 +86,7 @@ pub fn a(mut input_set: impl Iterator<Item = &'static str>) -> Result<usize, Box
     Ok(count)
 }
 
-pub fn b(mut input_set: impl Iterator<Item = &'static str>) -> Result<usize, Box<dyn Error>> {
+pub fn b(input_set: impl Iterator<Item = &'static str>) -> Result<usize, Box<dyn Error>> {
     let lines = input_set.map(Line::parse_from_str);
 
     let mut count = 0;
